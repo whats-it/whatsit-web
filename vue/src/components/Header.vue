@@ -65,7 +65,7 @@ export default {
 
   methods: {
     click () {
-      // do nothing
+      // do nothing..
     },
     leftmenuToggle (e) {
       e.preventDefault()
