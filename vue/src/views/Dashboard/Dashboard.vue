@@ -1,38 +1,32 @@
 <template>
-  <div>
-  <div style="height: 500px">
-    <vueCropper
-      ref="cropper"
-      :img="option.img"
-      :outputSize="option.size"
-      :outputType="option.outputType"
-      :info="true"
-      @realTime="realTime"
-    ></vueCropper>
-  </div>
-  <div class="test-button">
-    <button @click="changeImg" class="btn">changeImg</button>
-    <label class="btn" for="uploads">upload</label>
-    <input type="file" id="uploads" style="position:absolute; clip:rect(0 0 0 0);"
-           accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg">
-    <button @click="startCrop" v-if="!crap" class="btn">start</button>
-    <button @click="stopCrop" v-else class="btn">stop</button>
-    <button @click="clearCrop" class="btn">clear</button>
-    <button @click="finish('base64')" class="btn">preview(base64)</button>
-    <button @click="finish('blob')" class="btn">preview(blob)</button>
-    <a @click="down('base64')" class="btn" :href="downImg" download="demo">download(base64)</a>
-    <a @click="down('blob')" class="btn" :href="downImg" download="demo">download(blob)</a>
-  </div>
-  <div class="show-preview" :style="{'width': previews.w + 'px', 'height': previews.h + 'px',  'overflow': 'hidden', 'margin': '5px'}">
-    <div :style="previews.div">
-      <img :src="option.img" :style="previews.img">
+  <div class="wrapper">
+
+    <div style="max-width: 900px; display: inline-block;">
+      <VueCropper
+        ref="cropper"
+        :guides="true"
+        :autoCrop="false"
+        :view-mode="2"
+        :drag-mode="crop"
+        :background="true"
+        :src="imgSrc"
+        :cropmove="cropImage">
+        alt="Source Image">
+      </VueCropper>
     </div>
-  </div>
+
+    <br/>
+    <img
+      :src="cropImg"
+      style="object-fit:contain; width: 500px; height: 300px; border: 1px solid gray;"
+      alt="Please crop the above image."
+    />
+    <p> X : {{ cropImgX }} / Y : {{ cropImgY }} / Width : {{ cropImgWidth }} / Height : {{ cropImgHeight }} </p>
   </div>
 </template>
 
 <script>
-import vueCropper from 'vue-cropper'
+import VueCropper from 'vue-cropperjs';
 import {Dashboard} from './mixins/Dashboard'
 
 export default {
@@ -40,101 +34,57 @@ export default {
   mixins: [Dashboard],
 
   components: {
-    vueCropper
+    VueCropper
   },
+
 
   data: function () {
     return {
-      crap: false,
-      previews: {},
-      lists: [
-        {
-          img: '/static/img/logo-w.png'
-        },
-        {
-          img: 'http://ofyaji162.bkt.clouddn.com/touxiang.jpg'
-        }
-      ],
-      option: {
-        img: '',
-        size: 0.8,
-        outputType: 'jpeg'
-      },
-      downImg: '#'
-    }
+      imgSrc: '/static/img/bg3.jpeg',
+      cropImg: '',
+      cropImgX: '0',
+      cropImgY: '0',
+      cropImgWidth: '0',
+      cropImgHeight: '0'
+    };
   },
 
   methods: {
-    changeImg () {
-      this.option.img = this.lists[~~(Math.random() * this.lists.length)].img
-    },
-    startCrop () {
-      // start
-      this.crap = true
-      this.$refs.cropper.startCrop()
-    },
-    stopCrop () {
-      //  stop
-      this.crap = false
-      this.$refs.cropper.stopCrop()
-    },
-    clearCrop () {
-      // clear
-      this.$refs.cropper.clearCrop()
-    },
-    //
-    realTime (data) {
-      this.previews = data
-    },
-    finish (type) {
-      //
-      var test = window.open('about:blank')
-      test.document.body.innerHTML = '..'
-      if (type === 'blob') {
-        this.$refs.cropper.getCropBlob((data) => {
-          var test = window.open('')
-          test.location.href = data
-        })
-      } else {
-        this.$refs.cropper.getCropData((data) => {
-          test.location.href = data
-        })
-      }
-    },
+    setImage (e) {
+      const file = e.target.files[0];
 
-    down (type) {
-      // event.preventDefault()
-      var aLink = document.createElement('a')
-      aLink.download = 'demo'
-      //
-      if (type === 'blob') {
-        this.$refs.cropper.getCropBlob((data) => {
-          this.downImg = data
-          aLink.href = data
-          aLink.click()
-        })
+      if (!file.type.includes('image/')) {
+        alert('Please select an image file');
+        return;
+      }
+
+      if (typeof FileReader === 'function') {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+          this.imgSrc = event.target.result;
+          // rebuild cropperjs with the updated source
+          this.$refs.cropper.replace(event.target.result);
+        };
+
+        reader.readAsDataURL(file);
       } else {
-        this.$refs.cropper.getCropData((data) => {
-          this.downImg = data
-          aLink.href = data
-          aLink.click()
-        })
+        alert('Sorry, FileReader API not supported');
       }
     },
-
-    uploadImg (e) {
-      //
-      // this.option.img
-      var file = e.target.files[0]
-      if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)) {
-        alert('图片类型必须是.gif,jpeg,jpg,png,bmp中的一种')
-        return false
-      }
-      var reader = new FileReader()
-      reader.onload = (e) => {
-        this.option.img = e.target.result
-      }
-      reader.readAsDataURL(file)
+    cropImage () {
+      // get image data for post processing, e.g. upload or setting image src
+      this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL();
+//      console.log('cropImage...')
+      console.log(this.$refs.cropper.getData())
+      this.cropImgX = Math.round(this.$refs.cropper.getData().x)
+      this.cropImgY = Math.round(this.$refs.cropper.getData().y)
+      this.cropImgWidth = Math.round(this.$refs.cropper.getData().width)
+      this.cropImgHeight = Math.round(this.$refs.cropper.getData().height)
+    },
+    rotate () {
+      // guess what this does :)
+      this.$refs.cropper.rotate(90);
     }
   }
 }
@@ -142,5 +92,7 @@ export default {
 
 
 <style>
-
+  img {
+    max-width: 100%; /* This rule is very important, please do not ignore this! */
+  }
 </style>
