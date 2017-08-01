@@ -105,9 +105,18 @@ export default {
       if (imgIndex == imgList.length) {
         imgIndex = 0
       }
-      this.cropImg = ''
       this.imgSrc = imgList[imgIndex]
       this.$refs.cropper.replace(this.imgSrc)
+
+      this.resetPreviousImage()
+    },
+
+    resetPreviousImage () {
+      this.cropImg = ''
+      this.cropImgX = '0'
+      this.cropImgY = '0'
+      this.cropImgWidth = '0'
+      this.cropImgHeight = '0'
     }
   }
 }
