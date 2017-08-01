@@ -1,10 +1,8 @@
 <template>
   <navbar>
-    <p>
-    </p>
     <button class="navbar-toggler mobile-leftmenu-toggler hidden-lg-up" type="button" @click="mobileLeftMenuToggle">&#9776;</button>
     <a class="navbar-brand" href="#"></a>
-    <button class="navbar-toggler aside-menu-toggler hidden-lg-up" type="button" @click="mobileAsideToggle">&#9776;</button>
+    <!--<button class="navbar-toggler aside-menu-toggler hidden-lg-up" type="button" @click="mobileAsideToggle">&#9776;</button>-->
     <ul class="nav navbar-nav hidden-md-down">
       <li class="nav-item">
         <a class="nav-link navbar-toggler leftmenu-toggler" href="#" @click="leftmenuToggle">&#9776;</a>
