@@ -1,3 +1,5 @@
+let auth = require('../../util/auth')
+
 export const Header = {
 
   beforeCreate: function () {
@@ -30,6 +32,15 @@ export const Header = {
         deep: true // add this if u need to watch object properties change etc.
       }
     )
+    document.body.classList.toggle('aside-menu-hidden')
+  },
+
+  methods: {
+    logout () {
+      console.log('Logout..')
+      auth.clear()
+      window.location.href = 'http://auth.whatsit.net'
+    }
   }
 }
 
