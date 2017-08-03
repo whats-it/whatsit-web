@@ -1,6 +1,5 @@
 <template>
   <div class="wrapper">
-
     <div style="max-width: 900px; display: inline-block;">
       <VueCropper
         ref="cropper"
@@ -24,47 +23,29 @@
       :src="cropImg"
       style="object-fit:contain; width: 500px; height: 300px; border: 1px solid gray;"
       alt="Please crop the above image."
-    />  <button @click="nextImage()">다음 사진 >></button>
+    />
     <p> X : {{ cropImgX }} / Y : {{ cropImgY }} / Width : {{ cropImgWidth }} / Height : {{ cropImgHeight }} </p>
-  </div>
+</div>
 </template>
 
 <script>
+
 import VueCropper from 'vue-cropperjs';
 import {Dashboard} from './mixins/Dashboard'
-
-var imgList = [
-  '/static/img/bg1.jpg',
-  '/static/img/logo-w.png',
-  '/static/img/bg2.jpg',
-  '/static/img/bg3.jpeg',
-]
-var imgIndex=0
 
 export default {
   name: 'dashboard',
   mixins: [Dashboard],
 
   beforeCreate: function () {
-
   },
 
   components: {
     VueCropper
   },
 
-  data: function () {
-    return {
-      imgSrc: '/static/img/bg1.jpg',
-      cropImg: '',
-      cropImgX: '0',
-      cropImgY: '0',
-      cropImgWidth: '0',
-      cropImgHeight: '0'
-    };
-  },
-
   methods: {
+    // image upload
     setImage (e) {
       const file = e.target.files[0];
 
@@ -93,35 +74,15 @@ export default {
     cropImage () {
       // get image data for post processing, e.g. upload or setting image src
       this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL()
-      console.log(this.$refs.cropper.getData())
+      // console.log(this.$refs.cropper.getData())
       this.cropImgX = Math.round(this.$refs.cropper.getData().x)
       this.cropImgY = Math.round(this.$refs.cropper.getData().y)
       this.cropImgWidth = Math.round(this.$refs.cropper.getData().width)
       this.cropImgHeight = Math.round(this.$refs.cropper.getData().height)
-    },
-
-    nextImage () {
-      ++imgIndex
-      if (imgIndex == imgList.length) {
-        imgIndex = 0
-      }
-      this.imgSrc = imgList[imgIndex]
-      this.$refs.cropper.replace(this.imgSrc)
-
-      this.resetPreviousImage()
-    },
-
-    resetPreviousImage () {
-      this.cropImg = ''
-      this.cropImgX = '0'
-      this.cropImgY = '0'
-      this.cropImgWidth = '0'
-      this.cropImgHeight = '0'
     }
   }
 }
 </script>
-
 
 <style>
   img {
