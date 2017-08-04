@@ -60,6 +60,10 @@ export const Dashboard = {
       this.cropImgY = '0'
       this.cropImgWidth = '0'
       this.cropImgHeight = '0'
+    },
+
+    addImage () {
+      bus.$emit('add_image', this.cropImg)
     }
   }
 }

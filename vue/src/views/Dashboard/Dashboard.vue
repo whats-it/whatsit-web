@@ -25,6 +25,7 @@
       style="object-fit:contain; width: 500px; height: 300px; border: 1px solid gray;"
       alt="Please crop the above image."
     />
+    <button type="button" class="btn btn-danger btn-md" @click="addImage()">이미지추가></button>
     <p> X : {{ cropImgX }} / Y : {{ cropImgY }} / Width : {{ cropImgWidth }} / Height : {{ cropImgHeight }} </p>
 </div>
 </template>
