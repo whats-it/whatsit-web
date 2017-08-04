@@ -76,5 +76,9 @@ export default {
 
   SET_ACCESS_TOKEN: (state, { token }) => {
     state.accessToken = token
+  },
+
+  SET_CROP_IMAGE_LIST: (state, { cropImg }) => {
+    state.cropImgList.push({name: cropImg.name, cropImg: cropImg.cropImg, x: cropImg.x, y: cropImg.y, width: cropImg.width, height: cropImg.height})
   }
 }

@@ -35,44 +35,22 @@
 
         <hr class="transparent m-0 py-0">
 
-
-        <!--<hr class="transparent mx-3 my-0">-->
-        <!--<div class="callout callout-warning m-0 py-3">-->
-          <!--<div class="avatar float-right">-->
-            <!--<img src="img/avatars/7.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">-->
-          <!--</div>-->
-          <!--<div>Meeting with-->
-                            <!--<strong>Lucas</strong>-->
-          <!--</div>-->
-          <!--<small class="text-muted mr-3"><i class="icon-calendar"></i>&nbsp; 1 - 3pm</small>-->
-          <!--<small class="text-muted"><i class="icon-location-pin"></i>&nbsp; Palo Alto, CA</small>-->
-        <!--</div>-->
-        <!--<hr class="mx-3 my-0">-->
-        <!--<div class="callout callout-info m-0 py-3">-->
-          <!--<div class="avatar float-right">-->
-            <!--<img src="img/avatars/4.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">-->
-          <!--</div>-->
-          <!--<div>Skype with-->
-                            <!--<strong>Megan</strong>-->
-          <!--</div>-->
-          <!--<small class="text-muted mr-3"><i class="icon-calendar"></i>&nbsp; 4 - 5pm</small>-->
-          <!--<small class="text-muted"><i class="icon-social-skype"></i>&nbsp; On-line</small>-->
-        <!--</div>-->
-
         <hr class="transparent mx-3 my-0">
         <div class="callout m-0 py-4 text-muted text-center bg-faded text-uppercase">
           <small><b>작업목록</b>
           </small>
         </div>
 
-        <img
-          :src="cropImg"
-          style="object-fit:contain; width: 100%; height: 100px; border: 1px solid gray;"
-          alt="Please crop the above image."
-        />
-
-        <!--<hr class="transparent mx-3 my-0">-->
-        <!--<div class="callout callout-danger m-0 py-3">-->
+        <div
+          is="done-item"
+          v-for="(croppedImg, index) in cropImgList"
+          v-bind:key="index"
+          v-bind:labelName="index+1"
+          v-bind:imgScr="croppedImg.cropImg"
+          v-on:remove="cropImgList.splice(index, 1)"
+          v-on:remove="removeCropImage(index)"
+        >
+        </div>
 
         <hr class="mx-0 my-0">
       </div>

@@ -52,6 +52,24 @@ export const Dashboard = {
       this.$refs.cropper.replace(this.imgSrc)
 
       this.resetCanvas()
+      this.resetCropImgListState()
+    },
+
+    addImage () {
+      if (this.cropImg === undefined || this.cropImg === null || this.cropImg === '') {
+        return
+      }
+
+      bus.$emit('add_image',
+        {
+          cropImg: this.cropImg,
+          name: 'Labeled Name',
+          x: this.cropImgX,
+          y: this.cropImgY,
+          width: this.cropImgWidth,
+          height: this.cropImgHeight,
+        })
+      this.resetCanvas()
     },
 
     resetCanvas () {
@@ -63,17 +81,11 @@ export const Dashboard = {
       this.$refs.cropper.clear()
     },
 
-    addImage () {
-      bus.$emit('add_image',
-        {
-          aCropImg: this.cropImg,
-          aName: 'Labeled Name',
-          aX: this.cropImgX,
-          aY: this.cropImgY,
-          aWidth: this.cropImgWidth,
-          aHeight: this.cropImgHeight,
-        })
-      this.resetCanvas()
+    resetCropImgListState () {
+      window.alert(this.$store.state.cropImgList)
+      while (this.$store.state.cropImgList.length > 0) {
+        this.$store.state.cropImgList.pop()
+      }
     }
   }
 }

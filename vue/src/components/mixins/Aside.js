@@ -1,3 +1,16 @@
+
+import Vue from 'vue'
+var DoneItem = Vue.component('done-item', {
+  template: '\
+    <div style="width: 100%; height: 100px; border: 1px solid gray;">\
+      <img :src="imgScr" style="object-fit:contain; width: 100px; height: 100%; border-right: 1px solid gray;" alt="No croppped image." />\
+      <span style="margin-left: 10px; margin-right: 50px;"><b>{{ labelName }}</b></span>\
+      <button type="button" class="btn btn-outline-secondary btn-sm" @click="$emit(\'remove\')"><i class="fa fa-remove fa-lg mt-4"></i></button>\
+    </div>\
+  ',
+  props: ['imgScr', 'labelName']
+})
+
 import bus from '../../util/bus'
 
 export const Aside = {
@@ -5,9 +18,25 @@ export const Aside = {
   data: function () {
     return {
       memo: '밥, 꽁치찌개, 고사리, 상추, 오이지',
-      cropImg: null,
       cropImgList: []
     }
+  },
+
+  components: {
+    DoneItem
+  },
+
+  beforeCreate: function () {
+    this.$store.watch(this.$store.getters.cropImgList,
+      () => {
+        this.cropImgList = this.$store.state.cropImgList
+        console.log('Current cropped image list ...')
+        console.log(this.cropImgList)
+      },
+      {
+        deep: true // add this if u need to watch object properties change etc.
+      }
+    )
   },
 
   created: function () {
@@ -20,10 +49,25 @@ export const Aside = {
     },
 
     addImage: function (cropImg) {
-      this.cropImg = cropImg.aCropImg
-      console.log('Name: ' + cropImg.aName + ' / X: ' + cropImg.aX + ' / Y: ' + cropImg.aY + ' / W: ' + cropImg.aWidth + ' / H: ' + cropImg.aHeight)
-      this.cropImgList.push(cropImg)
-      console.log(this.cropImgList)
+      console.log('Name: ' + cropImg.name + ' / X: ' + cropImg.x + ' / Y: ' + cropImg.y + ' / W: ' + cropImg.width + ' / H: ' + cropImg.height)
+      addCropImage(this.$store, cropImg)
+    },
+
+    removeCropImage: function (index) {
+      this.$store.state.cropImgList.slice(index, 1)
+    },
+
+    addNewTodo: function () {
+      this.todos.push(this.newTodoText)
+      this.newTodoText = ''
     }
   }
+}
+
+function addCropImage (store, cropImg) {
+  return store.dispatch('ADD_CROP_IMAGE', {
+    cropImg: cropImg
+  }).then(() => {
+    console.log('done ADD_CROP_IMAGE in Aside.js')
+  })
 }
