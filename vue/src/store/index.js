@@ -16,6 +16,17 @@ export function createStore () {
       itemsPerPage: 20,
       userId: null,
       displayName: null,
+      cropImgList: [
+        {
+          index: null,
+          name: null,
+          cropImg: null,
+          x: 0,
+          y: 0,
+          width: 0,
+          height: 0
+        }
+      ],
       items: {/* [id: number]: Item */},
       orgs: {},
       profile: {},
