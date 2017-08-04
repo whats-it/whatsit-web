@@ -17,7 +17,7 @@
     <div class="tab-content">
       <button type="button" class="btn btn-danger btn-lg btn-block" @click="nextImage()"><b>저장하고 다음 사진으로</b></button>
       <div class="tab-pane active" id="timeline" role="tabpanel">
-        <div class="callout m-0 py-5 text-muted text-center bg-faded text-uppercase">
+        <div class="callout m-0 py-4 text-muted text-center bg-faded text-uppercase">
           <small><b>Today</b>
           </small>
         </div>
@@ -44,7 +44,7 @@
           <small class="text-muted"><i class="icon-social-skype"></i>&nbsp; On-line</small>
         </div>
         <hr class="transparent mx-3 my-0">
-        <div class="callout m-0 py-2 text-muted text-center bg-faded text-uppercase">
+        <div class="callout m-0 py-4 text-muted text-center bg-faded text-uppercase">
           <small><b>Tomorrow</b>
           </small>
         </div>
