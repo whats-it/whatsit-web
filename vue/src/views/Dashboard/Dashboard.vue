@@ -6,6 +6,7 @@
         :guides="true"
         :autoCrop="false"
         :background="true"
+        :zoomable="false"
         :minContainerWidth="500"
         :minContainerHeight="500"
         :minCanvasWidth="500"
