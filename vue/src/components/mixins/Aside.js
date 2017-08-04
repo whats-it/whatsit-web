@@ -20,8 +20,10 @@ export const Aside = {
     },
 
     addImage: function (cropImg) {
-      this.cropImg = cropImg
+      this.cropImg = cropImg.aCropImg
+      console.log('Name: ' + cropImg.aName + ' / X: ' + cropImg.aX + ' / Y: ' + cropImg.aY + ' / W: ' + cropImg.aWidth + ' / H: ' + cropImg.aHeight)
       this.cropImgList.push(cropImg)
+      console.log(this.cropImgList)
     }
   }
 }

@@ -51,19 +51,29 @@ export const Dashboard = {
       this.imgSrc = imgList[imgIndex]
       this.$refs.cropper.replace(this.imgSrc)
 
-      this.resetPreviousImage()
+      this.resetCanvas()
     },
 
-    resetPreviousImage () {
+    resetCanvas () {
       this.cropImg = ''
       this.cropImgX = '0'
       this.cropImgY = '0'
       this.cropImgWidth = '0'
       this.cropImgHeight = '0'
+      this.$refs.cropper.clear()
     },
 
     addImage () {
-      bus.$emit('add_image', this.cropImg)
+      bus.$emit('add_image',
+        {
+          aCropImg: this.cropImg,
+          aName: 'Labeled Name',
+          aX: this.cropImgX,
+          aY: this.cropImgY,
+          aWidth: this.cropImgWidth,
+          aHeight: this.cropImgHeight,
+        })
+      this.resetCanvas()
     }
   }
 }
