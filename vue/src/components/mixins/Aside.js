@@ -17,7 +17,7 @@ export const Aside = {
 
   data: function () {
     return {
-      memo: '밥, 꽁치찌개, 고사리, 상추, 오이지',
+      memo: '밥, 꽁치찌개, 고사리, 상추, 오이지\n서버 데이터로 채워야 함.',
       cropImgList: []
     }
   },
@@ -55,11 +55,6 @@ export const Aside = {
 
     removeCropImage: function (index) {
       this.$store.state.cropImgList.slice(index, 1)
-    },
-
-    addNewTodo: function () {
-      this.todos.push(this.newTodoText)
-      this.newTodoText = ''
     }
   }
 }
