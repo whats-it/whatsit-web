@@ -60,6 +60,10 @@ export const Dashboard = {
         return
       }
 
+      if (this.cropImgWidth === 0 || this.cropImgHeight === 0 || this.cropImgWidth === '0' || this.cropImgHeight === '0') {
+        return
+      }
+
       bus.$emit('add_image',
         {
           cropImg: this.cropImg,
@@ -69,8 +73,28 @@ export const Dashboard = {
           width: this.cropImgWidth,
           height: this.cropImgHeight,
         })
+
       this.resetCanvas()
+      // this.linedraw(this.cropImgX, this.cropImgY, this.cropImgWidth, this.cropImgHeight)
     },
+
+    // linedraw(aX, aY, aWidth, aHeight) {
+    //
+    //   console.log('1...')
+    //   var canv = this.$refs.cropper.canvas
+    //   var ctx=canv.getContext("2d");
+    //   console.log(ctx)
+    //
+    //   ctx.beginPath()
+    //   ctx.lineWidth="6";
+    //   ctx.strokeStyle="red";
+    //   ctx.rect(5, 5, 10, 10);
+    //   ctx.stroke();
+    //
+    //   var c = this.$refs.cropper.getCroppedCanvas()
+    //   console.log(c)
+    //   console.log('2...')
+    // },
 
     resetCanvas () {
       this.cropImg = ''
