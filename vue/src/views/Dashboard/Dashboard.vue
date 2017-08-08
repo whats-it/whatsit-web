@@ -7,6 +7,8 @@
         :autoCrop="false"
         :background="true"
         :zoomable="false"
+        :movable="false"
+        :toggleDragModeOnDblclick="false"
         :minContainerWidth="500"
         :minContainerHeight="500"
         :minCanvasWidth="500"
