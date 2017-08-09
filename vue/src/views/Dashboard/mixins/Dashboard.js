@@ -2,6 +2,8 @@ let WhatsIt = require('whatsit-sdk-js')
 let aw = new WhatsIt()
 let awProject = aw.getProject()
 
+
+
 import bus from '../../../util/bus'
 
 var imgList = [
@@ -13,16 +15,21 @@ var imgList = [
 var imgIndex=0
 // var currentImageSrc = '/static/img/bg1.jpg'
 
+var vueCropper
+// var bgCanvas
+
 export const Dashboard = {
 
   data: function () {
     return {
+      bgCanvas: null,
       imgSrc: '/static/img/bg1.jpg',
       cropImg: '',
       cropImgX: '0',
       cropImgY: '0',
       cropImgWidth: '0',
-      cropImgHeight: '0'
+      cropImgHeight: '0',
+      divAddImg: null
     }
   },
 
@@ -35,6 +42,14 @@ export const Dashboard = {
   },
 
   mounted: function () {
+    this.divAddImg = document.getElementById('div_add_img')
+
+    // this.bgCanvas = document.getElementById('bg_canvas')
+
+    // vueCropper = document.getElementById('vue_cropper').getBoundingClientRect()
+    //
+    // bgCanvas.style.top = vueCropper.top
+    // bgCanvas.style.left = vueCropper.left
   },
 
   methods: {
@@ -42,6 +57,22 @@ export const Dashboard = {
       console.log('on click to dashboard button')
       this.$router.push('/projects/add')
     },
+
+    // onReadyImgSrc () {
+    //   console.log('onReadyImgSrc')
+    //
+    //   this.bgCanvas.style.top = 50
+    //   this.bgCanvas.style.width = this.$refs.cropper.getContainerData().width.toString().concat('px')
+    //   this.bgCanvas.style.height = this.$refs.cropper.getContainerData().height.toString().concat('px')
+    //
+    //   let ctx = this.bgCanvas.getContext('2d')
+    //   ctx.beginPath()
+    //   ctx.zIndex=5
+    //   ctx.lineWidth='2'
+    //   ctx.strokeStyle='blue'
+    //   ctx.rect(5, 5, 10, 10)
+    //   ctx.stroke()
+    // },
 
     saveAndNextImage () {
       ++imgIndex
@@ -97,6 +128,8 @@ export const Dashboard = {
     // },
 
     resetCanvas () {
+      this.hideDivAddImg(true)
+
       this.cropImg = ''
       this.cropImgX = '0'
       this.cropImgY = '0'
@@ -109,6 +142,24 @@ export const Dashboard = {
       window.alert(this.$store.state.cropImgList)
       while (this.$store.state.cropImgList.length > 0) {
         this.$store.state.cropImgList.pop()
+      }
+    },
+
+    setDivAddImgPosition () {
+      let divAddImgX = 30 + this.$refs.cropper.getCropBoxData().left + this.$refs.cropper.getCropBoxData().width - 105
+      let divAddImgY = this.$refs.cropper.getCropBoxData().top + this.$refs.cropper.getCropBoxData().height + 10
+
+      this.divAddImg.style.left = divAddImgX.toString().concat('px')
+      this.divAddImg.style.top = divAddImgY.toString().concat('px')
+    },
+
+    hideDivAddImg (hidden) {
+      if (hidden) {
+        this.divAddImg.style.display = 'none'
+        this.divAddImg.style.visibility = 'hidden'
+      } else {
+        this.divAddImg.style.display = 'inline'
+        this.divAddImg.style.visibility = 'visible'
       }
     }
   }

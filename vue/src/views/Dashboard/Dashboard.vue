@@ -1,6 +1,11 @@
 <template>
   <div class="wrapper">
+
     <div style="max-width: 900px; display: inline-block;">
+
+      <!--<canvas id="bg_canvas" style="background-color: lightslategrey; position: fixed; opacity: 0.5;">-->
+      <!--</canvas>-->
+
       <VueCropper
         ref="cropper"
         :guides="true"
@@ -16,9 +21,20 @@
         :view-mode="2"
         :drag-mode="crop"
         :src="imgSrc"
-        :cropmove="cropImage">
-        alt="이미지 불러오는중...">
+        :ready="onReadyImgSrc"
+        :cropstart="cropStart"
+        :cropmove="cropImage"
+        :cropend="cropEnd"
+        alt="이미지 불러오는중..."
+        style="z-index: 1;"
+      >
       </VueCropper>
+
+      <div id="div_add_img" style="display: none; visibility: hidden; position: absolute; z-index: 2;">
+        <button type="button" class="btn btn-outline-secondary btn-md active" @click="resetCanvas"><i class="fa fa-close fa-lg mt-4"></i></button>
+        <button type="button" class="btn btn-danger btn-md active" @click="addImage"><i class="fa fa-check fa-lg mt-4"></i></button>
+      </div>
+
     </div>
 
     <br/>
@@ -27,7 +43,6 @@
       style="object-fit:contain; width: 500px; height: 300px; border: 1px solid gray;"
       alt="Please crop the above image."
     />
-    <button type="button" class="btn btn-danger btn-md" @click="addImage()">이미지추가></button>
     <p> X : {{ cropImgX }} / Y : {{ cropImgY }} / Width : {{ cropImgWidth }} / Height : {{ cropImgHeight }} </p>
 </div>
 </template>
@@ -40,9 +55,6 @@ import {Dashboard} from './mixins/Dashboard'
 export default {
   name: 'dashboard',
   mixins: [Dashboard],
-
-  beforeCreate: function () {
-  },
 
   components: {
     VueCropper
@@ -75,14 +87,29 @@ export default {
       }
     },
 
+    cropStart () {
+      this.hideDivAddImg(true)
+    },
+
     cropImage () {
+      this.hideDivAddImg(true)
+
       // get image data for post processing, e.g. upload or setting image src
       this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL()
-      // console.log(this.$refs.cropper.getData())
       this.cropImgX = Math.round(this.$refs.cropper.getData().x)
       this.cropImgY = Math.round(this.$refs.cropper.getData().y)
       this.cropImgWidth = Math.round(this.$refs.cropper.getData().width)
       this.cropImgHeight = Math.round(this.$refs.cropper.getData().height)
+    },
+
+    cropEnd () {
+      // console.log(this.$refs.cropper)
+      if (this.cropImgWidth === 0 || this.cropImgHeight === 0 || this.cropImgWidth === '0' || this.cropImgHeight === '0') {
+        return
+      }
+
+      this.setDivAddImgPosition()
+      this.hideDivAddImg(false)
     }
   }
 }
