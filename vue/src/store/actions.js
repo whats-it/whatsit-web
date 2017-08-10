@@ -119,6 +119,10 @@ export default {
     commit('SET_ACCESS_TOKEN', { token })
   },
 
+  ADD_CROP_IMAGE: ({ commit, state }, { cropImg }) => {
+    commit('SET_CROP_IMAGE_LIST', { cropImg })
+  },
+
   ADD_PROJECT: ({ commit, state }, { repo }) => {
     return addProject(repo, state.userId)
       .then((data) => {

@@ -24,5 +24,7 @@ export default {
 
   accessToken: state => () => state.accessToken,
 
-  userId: state => () => state.userId
+  userId: state => () => state.userId,
+
+  cropImgList: state => () => state.cropImgList
 }

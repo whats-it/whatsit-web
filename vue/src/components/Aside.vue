@@ -1,86 +1,69 @@
 <template>
-  <aside class="aside-menu px-2">
-    <div class="aside-options">
-      <div class="clearfix mt-4">
-        <small><b>Option 1</b></small>
-        <label class="switch switch-text switch-pill switch-success switch-sm float-right">
-          <input type="checkbox" class="switch-input" checked>
-          <span class="switch-label" data-on="On" data-off="Off"></span>
-          <span class="switch-handle"></span>
-        </label>
+  <aside class="aside-menu">
+
+    <!--<ul class="nav nav-tabs" role="tablist">-->
+      <!--<li class="nav-item">-->
+        <!--<a class="nav-link active" data-toggle="tab" href="#timeline" role="tab"><i class="icon-list"></i></a>-->
+      <!--</li>-->
+      <!--<li class="nav-item">-->
+        <!--<a class="nav-link" data-toggle="tab" href="#messages" role="tab"><i class="icon-speech"></i></a>-->
+      <!--</li>-->
+      <!--<li class="nav-item">-->
+        <!--<a class="nav-link" data-toggle="tab" href="#settings" role="tab"><i class="icon-settings"></i></a>-->
+      <!--</li>-->
+    <!--</ul>-->
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+
+      <hr class="transparent mx-3 my-0">
+      <button type="button" class="btn btn-danger btn-lg btn-block" @click="nextImage()"><b>저장하고 다음 사진으로</b></button>
+      <hr class="transparent mx-3 my-0">
+
+      <div class="tab-pane active" id="timeline" role="tabpanel">
+
+        <div class="callout m-0 py-4 text-muted text-center bg-faded text-uppercase">
+          <small><b>메모</b>
+          </small>
+        </div>
+
+        <hr class="transparent m-0 py-0">
+        <textarea style="width: 100%;" rows="4" placeholder="추천단어 없음" disabled>{{ memo }}</textarea>
+        <div class="callout m-0">
+
+        </div>
+
+        <hr class="transparent m-0 py-0">
+
+        <hr class="transparent mx-3 my-0">
+        <div class="callout m-0 py-4 text-muted text-center bg-faded text-uppercase">
+          <small><b>작업목록</b>
+          </small>
+        </div>
+
+        <div
+          is="done-item"
+          v-for="(croppedImg, index) in cropImgList"
+          v-bind:key="index"
+          v-bind:labelName="index+1"
+          v-bind:imgScr="croppedImg.cropImg"
+          v-on:remove="cropImgList.splice(index, 1)"
+          v-on:remove="removeCropImage(index)"
+        >
+        </div>
+
+        <hr class="mx-0 my-0">
       </div>
-      <div>
-        <small class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</small>
-      </div>
     </div>
-
-    <div class="aside-options">
-      <div class="clearfix mt-3">
-        <small><b>Option 2</b></small>
-        <label class="switch switch-text switch-pill switch-success switch-sm float-right">
-          <input type="checkbox" class="switch-input">
-          <span class="switch-label" data-on="On" data-off="Off"></span>
-          <span class="switch-handle"></span>
-        </label>
-      </div>
-      <div>
-        <small class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</small>
-      </div>
-    </div>
-
-    <div class="aside-options">
-      <div class="clearfix mt-3">
-        <small><b>Option 3</b></small>
-        <label class="switch switch-text switch-pill switch-success switch-sm float-right">
-          <input type="checkbox" class="switch-input">
-          <span class="switch-label" data-on="On" data-off="Off"></span>
-          <span class="switch-handle"></span>
-        </label>
-      </div>
-    </div>
-
-    <div class="aside-options">
-      <div class="clearfix mt-3">
-        <small><b>Option 4</b></small>
-        <label class="switch switch-text switch-pill switch-success switch-sm float-right">
-          <input type="checkbox" class="switch-input" checked>
-          <span class="switch-label" data-on="On" data-off="Off"></span>
-          <span class="switch-handle"></span>
-        </label>
-      </div>
-    </div>
-
-    <hr>
-    <h6>System Utilization</h6>
-
-    <div class="text-uppercase mb-1 mt-4"><small><b>CPU Usage</b></small></div>
-    <div class="progress progress-xs">
-      <div class="progress-bar bg-info" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-    </div>
-    <small class="text-muted">348 Processes. 1/4 Cores.</small>
-
-    <div class="text-uppercase mb-1 mt-2"><small><b>Memory Usage</b></small></div>
-    <div class="progress progress-xs">
-      <div class="progress-bar bg-warning" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-    </div>
-    <small class="text-muted">11444GB/16384MB</small>
-
-    <div class="text-uppercase mb-1 mt-2"><small><b>SSD 1 Usage</b></small></div>
-    <div class="progress progress-xs">
-      <div class="progress-bar bg-danger" role="progressbar" style="width: 95%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-    </div>
-    <small class="text-muted">243GB/256GB</small>
-
-    <div class="text-uppercase mb-1 mt-2"><small><b>SSD 2 Usage</b></small></div>
-    <div class="progress progress-xs">
-      <div class="progress-bar bg-success" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-    </div>
-    <small class="text-muted">25GB/256GB</small>
   </aside>
 </template>
 
 <script>
+import {Aside} from './mixins/Aside'
+
 export default {
-  name: 'aside'
+  name: 'aside',
+  mixins: [Aside]
+
 }
 </script>
