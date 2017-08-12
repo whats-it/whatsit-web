@@ -30,6 +30,16 @@ export const Dashboard = {
 
   beforeCreate: function () {
     console.log('Dashboard: beforeCreate')
+    this.$store.watch(this.$store.getters.cropImgList,
+      () => {
+        console.log('Dashboard.js : The cropImgList have been changed.')
+        this.clearBgCanvas()
+        this.drawCropBoxes()
+      },
+      {
+        deep: true // add this if u need to watch object properties change etc.
+      }
+    )
   },
 
   created: function () {
@@ -72,6 +82,7 @@ export const Dashboard = {
         return
       }
 
+      let cropBoxData = this.$refs.cropper.getCropBoxData()
       bus.$emit('add_image',
         {
           cropImg: this.cropImg,
@@ -80,22 +91,11 @@ export const Dashboard = {
           y: this.cropImgY,
           width: this.cropImgWidth,
           height: this.cropImgHeight,
+          cropBoxLeft: cropBoxData.left,
+          cropBoxTop: cropBoxData.top,
+          cropBoxWidth: cropBoxData.width,
+          cropBoxHeight: cropBoxData.height,
         })
-
-      let cropBoxData = this.$refs.cropper.getCropBoxData()
-      this.drawLine(cropBoxData.left, cropBoxData.top, cropBoxData.width, cropBoxData.height)
-    },
-
-    drawLine(aX, aY, aWidth, aHeight) {
-      var ctx = this.bgCanvas.getContext('2d')
-
-      ctx.beginPath()
-      ctx.lineWidth = '3'
-      ctx.strokeStyle = 'gray'
-      ctx.rect(aX, aY, aWidth, aHeight)
-      ctx.stroke()
-
-      this.resetCanvas()
     },
 
     resetCanvas () {
@@ -124,6 +124,25 @@ export const Dashboard = {
       this.bgCanvas.style.top = 0
       this.bgCanvas.setAttribute('width', containerWidth.toString().concat('px'))
       this.bgCanvas.setAttribute('height', containerHeight.toString().concat('px'))
+    },
+
+    drawCropBoxes () {
+      let ctx = this.bgCanvas.getContext('2d')
+      let cropImgList = this.$store.state.cropImgList
+      for (let i in cropImgList) {
+        ctx.beginPath()
+        ctx.lineWidth = '3'
+        ctx.strokeStyle = 'gray'
+        ctx.rect(cropImgList[i].cropBoxLeft, cropImgList[i].cropBoxTop, cropImgList[i].cropBoxWidth, cropImgList[i].cropBoxHeight)
+        ctx.stroke()
+      }
+
+      this.resetCanvas()
+    },
+
+    clearBgCanvas () {
+      var ctx = this.bgCanvas.getContext('2d')
+      ctx.clearRect(0, 0, this.$refs.cropper.getContainerData().width, this.$refs.cropper.getContainerData().height)
     },
 
     setDivAddImgPosition () {

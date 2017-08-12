@@ -79,6 +79,18 @@ export default {
   },
 
   SET_CROP_IMAGE_LIST: (state, { cropImg }) => {
-    state.cropImgList.push({name: cropImg.name, cropImg: cropImg.cropImg, x: cropImg.x, y: cropImg.y, width: cropImg.width, height: cropImg.height})
+    state.cropImgList.push(
+      {
+        name: cropImg.name,
+        cropImg: cropImg.cropImg,
+        x: cropImg.x,
+        y: cropImg.y,
+        width: cropImg.width,
+        height: cropImg.height,
+        cropBoxLeft: cropImg.cropBoxLeft,
+        cropBoxTop: cropImg.cropBoxTop,
+        cropBoxWidth: cropImg.cropBoxWidth,
+        cropBoxHeight: cropImg.cropBoxHeight
+      })
   }
 }
