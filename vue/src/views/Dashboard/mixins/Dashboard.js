@@ -2,28 +2,23 @@ let WhatsIt = require('whatsit-sdk-js')
 let aw = new WhatsIt()
 let awProject = aw.getProject()
 
-
-
 import bus from '../../../util/bus'
 
 var imgList = [
+  '/static/img/bg3.jpeg',
   '/static/img/bg1.jpg',
   '/static/img/logo-w.png',
   '/static/img/bg2.jpg',
-  '/static/img/bg3.jpeg',
+
 ]
 var imgIndex=0
-// var currentImageSrc = '/static/img/bg1.jpg'
-
-var vueCropper
-// var bgCanvas
 
 export const Dashboard = {
 
   data: function () {
     return {
       bgCanvas: null,
-      imgSrc: '/static/img/bg1.jpg',
+      imgSrc: '/static/img/bg3.jpeg',
       cropImg: '',
       cropImgX: '0',
       cropImgY: '0',
@@ -42,14 +37,8 @@ export const Dashboard = {
   },
 
   mounted: function () {
+    this.bgCanvas = document.getElementById('bg_canvas')
     this.divAddImg = document.getElementById('div_add_img')
-
-    // this.bgCanvas = document.getElementById('bg_canvas')
-
-    // vueCropper = document.getElementById('vue_cropper').getBoundingClientRect()
-    //
-    // bgCanvas.style.top = vueCropper.top
-    // bgCanvas.style.left = vueCropper.left
   },
 
   methods: {
@@ -58,21 +47,9 @@ export const Dashboard = {
       this.$router.push('/projects/add')
     },
 
-    // onReadyImgSrc () {
-    //   console.log('onReadyImgSrc')
-    //
-    //   this.bgCanvas.style.top = 50
-    //   this.bgCanvas.style.width = this.$refs.cropper.getContainerData().width.toString().concat('px')
-    //   this.bgCanvas.style.height = this.$refs.cropper.getContainerData().height.toString().concat('px')
-    //
-    //   let ctx = this.bgCanvas.getContext('2d')
-    //   ctx.beginPath()
-    //   ctx.zIndex=5
-    //   ctx.lineWidth='2'
-    //   ctx.strokeStyle='blue'
-    //   ctx.rect(5, 5, 10, 10)
-    //   ctx.stroke()
-    // },
+    onReadyImgSrc () {
+      this.setBgCanvasRect()
+    },
 
     saveAndNextImage () {
       ++imgIndex
@@ -105,27 +82,21 @@ export const Dashboard = {
           height: this.cropImgHeight,
         })
 
-      this.resetCanvas()
-      // this.linedraw(this.cropImgX, this.cropImgY, this.cropImgWidth, this.cropImgHeight)
+      let cropBoxData = this.$refs.cropper.getCropBoxData()
+      this.drawLine(cropBoxData.left, cropBoxData.top, cropBoxData.width, cropBoxData.height)
     },
 
-    // linedraw(aX, aY, aWidth, aHeight) {
-    //
-    //   console.log('1...')
-    //   var canv = this.$refs.cropper.canvas
-    //   var ctx=canv.getContext("2d");
-    //   console.log(ctx)
-    //
-    //   ctx.beginPath()
-    //   ctx.lineWidth="6";
-    //   ctx.strokeStyle="red";
-    //   ctx.rect(5, 5, 10, 10);
-    //   ctx.stroke();
-    //
-    //   var c = this.$refs.cropper.getCroppedCanvas()
-    //   console.log(c)
-    //   console.log('2...')
-    // },
+    drawLine(aX, aY, aWidth, aHeight) {
+      var ctx = this.bgCanvas.getContext('2d')
+
+      ctx.beginPath()
+      ctx.lineWidth = '3'
+      ctx.strokeStyle = 'gray'
+      ctx.rect(aX, aY, aWidth, aHeight)
+      ctx.stroke()
+
+      this.resetCanvas()
+    },
 
     resetCanvas () {
       this.hideDivAddImg(true)
@@ -143,6 +114,16 @@ export const Dashboard = {
       while (this.$store.state.cropImgList.length > 0) {
         this.$store.state.cropImgList.pop()
       }
+    },
+
+    setBgCanvasRect () {
+      let containerWidth = Math.round(this.$refs.cropper.getContainerData().width)
+      let containerHeight = Math.round(this.$refs.cropper.getContainerData().height)
+
+      this.bgCanvas.style.left = 30
+      this.bgCanvas.style.top = 0
+      this.bgCanvas.setAttribute('width', containerWidth.toString().concat('px'))
+      this.bgCanvas.setAttribute('height', containerHeight.toString().concat('px'))
     },
 
     setDivAddImgPosition () {
