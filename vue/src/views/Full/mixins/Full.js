@@ -11,7 +11,7 @@ export const Full = {
     if (!auth.isAuthenticated()) {
       console.log('Error : no access-token')
       auth.clear()
-      window.location.href = 'http://auth.whatsit.net'
+      window.location.href = 'http://login.whatsit.net'
     } else {
       console.log('Authorized User')
       // drawComponents()
@@ -43,6 +43,6 @@ function restoreAccessToken (store) {
   }).catch(() => {
     console.log('Dashboard: UPDATE_ACCESS_TOKEN error')
     auth.clear()
-    window.location.href = 'http://auth.whatsit.net'
+    window.location.href = 'http://login.whatsit.net'
   })
 }

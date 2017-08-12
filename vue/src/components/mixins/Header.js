@@ -39,7 +39,7 @@ export const Header = {
     logout () {
       console.log('Logout..')
       auth.clear()
-      window.location.href = 'http://auth.whatsit.net'
+      window.location.href = 'http://login.whatsit.net'
     }
   }
 }
