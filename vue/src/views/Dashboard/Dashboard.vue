@@ -1,11 +1,9 @@
 <template>
   <div class="wrapper">
 
-    <div style="max-width: 900px; display: inline-block;">
+    <canvas id="bg_canvas" style="position: absolute; z-index: 2;"></canvas>
 
-      <!--<canvas id="bg_canvas" style="background-color: lightslategrey; position: fixed; opacity: 0.5;">-->
-      <!--</canvas>-->
-
+    <div style="max-width: 80%; display: inline-block; z-index: 1;">
       <VueCropper
         ref="cropper"
         :guides="true"
@@ -26,24 +24,24 @@
         :cropmove="cropImage"
         :cropend="cropEnd"
         alt="이미지 불러오는중..."
-        style="z-index: 1;"
       >
       </VueCropper>
-
-      <div id="div_add_img" style="display: none; visibility: hidden; position: absolute; z-index: 2;">
-        <button type="button" class="btn btn-outline-secondary btn-md active" @click="resetCanvas"><i class="fa fa-close fa-lg mt-4"></i></button>
-        <button type="button" class="btn btn-danger btn-md active" @click="addImage"><i class="fa fa-check fa-lg mt-4"></i></button>
-      </div>
-
     </div>
 
-    <br/>
+    <div id="div_add_img" style="display: none; visibility: hidden; position: absolute; z-index: 3;">
+      <button type="button" class="btn btn-outline-secondary btn-md active" @click="resetCanvas"><i class="fa fa-close fa-lg mt-4"></i></button>
+      <button type="button" class="btn btn-youtube btn-md text" @click="addImage"><i class="fa fa-check fa-lg mt-4"></i></button>
+    </div>
+
+    <br/><br/>
+
     <img
       :src="cropImg"
       style="object-fit:contain; width: 500px; height: 300px; border: 1px solid gray;"
       alt="Please crop the above image."
     />
     <p> X : {{ cropImgX }} / Y : {{ cropImgY }} / Width : {{ cropImgWidth }} / Height : {{ cropImgHeight }} </p>
+
 </div>
 </template>
 
@@ -118,5 +116,9 @@ export default {
 <style>
   img {
     max-width: 100%; /* This rule is very important, please do not ignore this! */
+  }
+
+  #bg_canvas {
+    pointer-events: none;
   }
 </style>

@@ -30,7 +30,7 @@ export const Aside = {
     this.$store.watch(this.$store.getters.cropImgList,
       () => {
         this.cropImgList = this.$store.state.cropImgList
-        console.log('Current cropped image list ...')
+        console.log('Aside.js : Current cropped image list ...')
         console.log(this.cropImgList)
       },
       {
